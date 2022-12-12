@@ -1,4 +1,5 @@
 import { ParsedUrlQuery } from "querystring";
+import { BlockType } from "notion-block-renderer";
 
 export type LayoutProps = {
   children: React.ReactNode;
@@ -20,7 +21,7 @@ export type CardProps = {
 
 export type ArticleProps = {
   page: PageType;
-  blocks?: BlockType[];
+  blocks: BlockType[];
 };
 
 export type ArticleMetaProps = CardProps;
@@ -30,6 +31,8 @@ export type IndexProps = { pages: PageType[] };
 export type Params = ParsedUrlQuery & {
   slug: string;
 };
+
+export type BlockProps = { block: BlockType };
 
 export type FileType = {
   file?: { url: string };
@@ -68,12 +71,12 @@ export type PageType = {
   properties: PropertyType;
 };
 
-export type BlockType = {
-  type: string;
-  heading_1: { rich_text: RichTextType[] };
-  heading_2: { rich_text: RichTextType[] };
-  paragraph: { rich_text: RichTextType[] };
-};
+// export type BlockType = {
+//   type: string;
+//   heading_1: { rich_text: RichTextType[] };
+//   heading_2: { rich_text: RichTextType[] };
+//   paragraph: { rich_text: RichTextType[] };
+// };
 
 [
   {
