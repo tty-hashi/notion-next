@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { ArticleProps } from "../types/types";
 import { getCover, getDate, getMultiSelect, getText } from "../utils/property";
@@ -26,7 +27,9 @@ const ArticleMeta: React.FC<ArticleProps> = ({ page }) => {
           <div className="col-span-2">
             {/* change later */}
             {getMultiSelect(page.properties.tags.multi_select).map((tag: string, index: number) => (
-              <span key={index}>{`#${tag} `}</span>
+              <Link key={index} href={`/tags/${tag}`} className="text-gray-700 no-underline border-b border-solid border-gray-700 opacity-70 mr-3">
+                {`#${tag}`}
+              </Link>
             ))}
           </div>
         </div>

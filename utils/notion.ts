@@ -3,7 +3,7 @@ import { Client } from "@notionhq/client";
 const notion = new Client({ auth: process.env.NOTION_KEY as string });
 const DATABASE_ID = process.env.NOTION_DATABASE_ID as string;
 
-export const fetchPages = async ({ slug }: { slug?: string }) => {
+export const fetchPages = async ({ slug, tag }: { slug?: string; tag?: string }) => {
   const and: any = [
     {
       property: "isPublic",
@@ -26,6 +26,14 @@ export const fetchPages = async ({ slug }: { slug?: string }) => {
       },
     });
   }
+  if (tag) {
+    and.push({
+      property: "tags",
+      multi_select: {
+        contains: tag,
+      },
+    });
+  }
   return await notion.databases.query({
     database_id: DATABASE_ID,
     filter: {
@@ -40,6 +48,23 @@ export const fetchPages = async ({ slug }: { slug?: string }) => {
   });
 };
 
+// export const fetchBlocksByPageId = async (pageId: string) => {
+//   return await notion.blocks.children.list({ block_id: pageId });
+// };
 export const fetchBlocksByPageId = async (pageId: string) => {
-  return await notion.blocks.children.list({ block_id: pageId });
+  const data = [];
+  let cursor = undefined;
+
+  while (true) {
+    //{ results: Record<string, any>[]; next_cursor: string | null }
+    const { results, next_cursor }: any = await notion.blocks.children.list({
+      block_id: pageId,
+      start_cursor: cursor,
+    });
+    data.push(...results);
+    if (!next_cursor) break;
+    cursor = next_cursor;
+  }
+
+  return { results: data };
 };
