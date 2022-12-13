@@ -1,7 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import NotionBlocks from "notion-block-renderer";
 import ArticleMeta from "../../components/ArticleMeta";
-import Block from "../../components/Block";
 import Layout from "../../components/Layout";
 import { ArticleProps, Params } from "../../types/types";
 import { fetchBlocksByPageId, fetchPages } from "../../utils/notion";
@@ -45,7 +44,7 @@ const Article: NextPage<ArticleProps> = ({ page, blocks }) => {
       <article className="w-full">
         {/* meta section */}
         <div className="my-12">
-          <ArticleMeta page={page} />
+          <ArticleMeta page={page} blocks={blocks} />
         </div>
 
         {/* article */}
